@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -48,6 +51,22 @@ public class PessoaTest {
 		Set<ConstraintViolation<Pessoa>> violations = validator.validate(pessoa);
 		assertFalse(violations.isEmpty());
 		assertEquals("Pessoa deve ter ao menos um contato.", violations.stream().map(v->v.getMessage()).findFirst().get());
+	}
+	
+	
+	@Test
+	public void testPessoaDataNascimentoFutura() {
+		Pessoa pessoa = PessoaProvider.otavio();
+		
+		Date currentDate = new Date();
+		LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+		localDateTime = localDateTime.plusDays(1);
+		Date dataNascimentoFutura = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		
+		pessoa.setDataNascimento(dataNascimentoFutura);
+		Set<ConstraintViolation<Pessoa>> violations = validator.validate(pessoa);
+		assertFalse(violations.isEmpty());
+		assertEquals("Data nascimento nao pode ser futura", violations.stream().map(v->v.getMessage()).findFirst().get());
 	}
 
 }

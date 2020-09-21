@@ -32,7 +32,7 @@ public class Pessoa {
 	public String cpf;
 
 	@JsonFormat(pattern="dd/MM/yyyy")
-	@PastOrPresent
+	@PastOrPresent(message = "Data nascimento nao pode ser futura")
 	@Column(nullable = false)
 	public Date dataNascimento;
 
