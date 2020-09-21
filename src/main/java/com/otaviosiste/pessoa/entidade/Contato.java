@@ -4,8 +4,6 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 
 @Embeddable
@@ -21,9 +19,6 @@ public class Contato {
 	@Column(nullable = false)
 	public String email;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    private Pessoa pessoa;
-
 	Contato(){};
 	
 	public Contato(String nome, String telefone, String email) {
